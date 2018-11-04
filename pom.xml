@@ -34,7 +34,7 @@
   <distributionManagement>
     <repository>
       <id>bintray-palindromicity-simple-syslog-3164</id>
-      <name>palindromicity-simple-syslog-5424</name>
+      <name>palindromicity-simple-syslog-3164</name>
       <url>https://api.bintray.com/maven/palindromicity/simple-syslog-3164/simple-syslog-3164/;publish=1</url>
     </repository>
   </distributionManagement>

@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 simple-syslog-5424 authors
+ * Copyright 2018 simple-syslog-3164 authors
  * All rights reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
 
 /**
  * {@code KeyProvider} defines an interface for classes that can be used to provide
- * Map keys used for Syslog 5424 message parts.
+ * Map keys used for Syslog message parts.
  */
 public interface KeyProvider {
 
