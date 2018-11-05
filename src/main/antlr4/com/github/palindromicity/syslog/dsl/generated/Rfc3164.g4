@@ -53,8 +53,12 @@ grammar Rfc3164;
 
  // support both the 5424 and the 3164 formats
  timestamp       : (full_date CAP_T full_time) #headerTimeStamp
-  | capital lower lower SP (SP?) digit (digit?) time_hour COLON time_minute COLON time_second #headerTimeStamp3164
+  | date_month_short date_day_short sp partial_time #headerTimeStamp3164
  ;
+
+ date_month_short : capital lower lower ;
+ date_day_short : sp (sp?) digit (digit?) ;
+
 
  full_date       : date_fullyear DASH date_month DASH date_mday ;
 

@@ -80,6 +80,18 @@ public interface Rfc3164Visitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitHeaderTimeStamp3164(Rfc3164Parser.HeaderTimeStamp3164Context ctx);
 	/**
+	 * Visit a parse tree produced by {@link Rfc3164Parser#date_month_short}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDate_month_short(Rfc3164Parser.Date_month_shortContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link Rfc3164Parser#date_day_short}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDate_day_short(Rfc3164Parser.Date_day_shortContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link Rfc3164Parser#full_date}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

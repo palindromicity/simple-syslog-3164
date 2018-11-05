@@ -112,6 +112,26 @@ public interface Rfc3164Listener extends ParseTreeListener {
 	 */
 	void exitHeaderTimeStamp3164(Rfc3164Parser.HeaderTimeStamp3164Context ctx);
 	/**
+	 * Enter a parse tree produced by {@link Rfc3164Parser#date_month_short}.
+	 * @param ctx the parse tree
+	 */
+	void enterDate_month_short(Rfc3164Parser.Date_month_shortContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link Rfc3164Parser#date_month_short}.
+	 * @param ctx the parse tree
+	 */
+	void exitDate_month_short(Rfc3164Parser.Date_month_shortContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link Rfc3164Parser#date_day_short}.
+	 * @param ctx the parse tree
+	 */
+	void enterDate_day_short(Rfc3164Parser.Date_day_shortContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link Rfc3164Parser#date_day_short}.
+	 * @param ctx the parse tree
+	 */
+	void exitDate_day_short(Rfc3164Parser.Date_day_shortContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link Rfc3164Parser#full_date}.
 	 * @param ctx the parse tree
 	 */

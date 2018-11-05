@@ -14,21 +14,19 @@
  * limitations under the License.
  */
 
-package com.github.palindromicity.syslog.dsl;
+package com.github.palindromicity.syslog;
 
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
-import com.github.palindromicity.syslog.AllowableDeviations;
-import com.github.palindromicity.syslog.DefaultKeyProvider;
-import com.github.palindromicity.syslog.dsl.generated.Rfc3164Lexer;
-import com.github.palindromicity.syslog.dsl.generated.Rfc3164Parser;
-import org.antlr.v4.runtime.ANTLRFileStream;
-import org.antlr.v4.runtime.CommonTokenStream;
+import com.github.palindromicity.syslog.dsl.ParseException;
+import com.github.palindromicity.syslog.dsl.SyslogFieldKeys;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class Syslog3164ListenerTest {
+public class Rfc5424SyslogParserTest extends AbstractRfc5425SyslogParserTest {
 
   private static final String expectedMessageOne = "CISE_RADIUS_Accounting 0018032501 1 0 2018-09-14 10:54:09.095"
       + " +10:00 0221114759 3002 NOTICE Radius-Accounting: RADIUS Accounting watchdog update, ConfigVersionId=73, "
@@ -67,27 +65,11 @@ public class Syslog3164ListenerTest {
   private static final String expectedFacilityOne = "22";
   private static final String expectedSeverityOne = "5";
 
-  private static final String expectedHostNameTwo = "10.34.84.145";
-  private static final String expectedMessageTwo = "Aug  7 00:45:43 stage-pdp01 CISE_Profiler 0000024855 1 0 "
-      + "2014-08-07 00:45:43.741 -07:00 0000288542 80002 INFO  Profiler: Profiler EndPoint profiling event occurred, "
-      + "ConfigVersionId=113, EndpointCertainityMetric=10, EndpointIPAddress=10.56.111.14, "
-      + "EndpointMacAddress=3C:97:0E:C3:F8:F1, EndpointMatchedPolicy=Nortel-Device, EndpointNADAddress=10.56.72.127, "
-      + "EndpointOUI=Wistron InfoComm(Kunshan)Co.\\,Ltd., EndpointPolicy=Nortel-Device, "
-      + "EndpointProperty=StaticAssignment=false\\,PostureApplicable=Yes\\,PolicyVersion=402\\,"
-      + "IdentityGroupID=0c1d9270-68a6-11e1-bc72-0050568e013c\\,Total Certainty Factor=10\\,"
-      + "BYODRegistration=Unknown\\,FeedService=false\\,EndPointPolicyID=49054ed0-68a6-11e1-bc72-0050568e013c\\,"
-      + "FirstCollection=1407397543718\\,MatchedPolicyID=49054ed0-68a6-11e1-bc72-0050568e013c\\,TimeToProfile=19\\,"
-      + "StaticGroupAssignment=false\\,NmapSubnetScanID=0\\,DeviceRegistrationStatus=NotRegistered\\,PortalUser=, "
-      + "EndpointSourceEvent=SNMPQuery Probe, EndpointIdentityGroup=Profiled, ProfilerServer=stage-pdp01.cisco.com,";
-  private static final String expectedPriTwo = "181";
-  private static final String expectedTimestampTwo = "Aug  6 17:26:31";
-  private static final String expectedFacilityTwo = "22";
-  private static final String expectedSeverityTwo = "5";
-
   @Test
   @SuppressWarnings("unchecked")
-  public void testAllPresent() throws Exception {
-    Map<String, Object> map = handleFile("src/test/resources/logs/3164/single_ise.txt");
+  public void testParseLine() throws Exception {
+    SyslogParser parser = new SyslogParserBuilder().build();
+    Map<String, Object> map = handleLine(readFileToString("src/test/resources/logs/3164/single_ise.txt"), parser);
     Assert.assertEquals(expectedMessageOne, map.get(SyslogFieldKeys.MESSAGE.getField()));
     Assert.assertEquals(expectedHostNameOne, map.get(SyslogFieldKeys.HEADER_HOSTNAME.getField()));
     Assert.assertEquals(expectedPriOne, map.get(SyslogFieldKeys.HEADER_PRI.getField()));
@@ -96,47 +78,88 @@ public class Syslog3164ListenerTest {
     Assert.assertEquals(expectedTimestampOne, map.get(SyslogFieldKeys.HEADER_TIMESTAMP.getField()));
   }
 
+
   @Test
   @SuppressWarnings("unchecked")
-  public void testAllPresentOldDate() throws Exception {
-    Map<String, Object> map = handleFile("src/test/resources/logs/3164/single_ise_old_date.txt");
-    Assert.assertEquals(expectedMessageTwo, map.get(SyslogFieldKeys.MESSAGE.getField()));
-    Assert.assertEquals(expectedHostNameTwo, map.get(SyslogFieldKeys.HEADER_HOSTNAME.getField()));
-    Assert.assertEquals(expectedPriTwo, map.get(SyslogFieldKeys.HEADER_PRI.getField()));
-    Assert.assertEquals(expectedSeverityTwo, map.get(SyslogFieldKeys.HEADER_PRI_SEVERITY.getField()));
-    Assert.assertEquals(expectedFacilityTwo, map.get(SyslogFieldKeys.HEADER_PRI_FACILITY.getField()));
-    Assert.assertEquals(expectedTimestampTwo, map.get(SyslogFieldKeys.HEADER_TIMESTAMP.getField()));
+  public void testParseLineConsumer() throws Exception {
+    SyslogParser parser = new SyslogParserBuilder().build();
+    handleLine(readFileToString("src/test/resources/logs/3164/single_ise.txt"), parser, (map) -> {
+      Assert.assertEquals(expectedMessageOne, map.get(SyslogFieldKeys.MESSAGE.getField()));
+      Assert.assertEquals(expectedHostNameOne, map.get(SyslogFieldKeys.HEADER_HOSTNAME.getField()));
+      Assert.assertEquals(expectedPriOne, map.get(SyslogFieldKeys.HEADER_PRI.getField()));
+      Assert.assertEquals(expectedSeverityOne, map.get(SyslogFieldKeys.HEADER_PRI_SEVERITY.getField()));
+      Assert.assertEquals(expectedFacilityOne, map.get(SyslogFieldKeys.HEADER_PRI_FACILITY.getField()));
+      Assert.assertEquals(expectedTimestampOne, map.get(SyslogFieldKeys.HEADER_TIMESTAMP.getField()));
+    });
+  }
+
+  @Test
+  public void testParseLinesConsumerAndErrorConsumer() throws Exception {
+    final AtomicInteger mapCount = new AtomicInteger();
+    final AtomicInteger errorCount = new AtomicInteger();
+    SyslogParser parser = new SyslogParserBuilder().build();
+    handleFile("src/test/resources/logs/3164/many_with_errors.txt", parser, (map) -> mapCount.incrementAndGet(),
+        (line,throwable) -> errorCount.incrementAndGet());
+    Assert.assertEquals(3, mapCount.get());
+    Assert.assertEquals(1, errorCount.get());
+  }
+
+  @Test
+  public void testParseLines() throws Exception {
+    SyslogParser parser = new SyslogParserBuilder().build();
+    List<Map<String, Object>> mapList = handleFile("src/test/resources/logs/3164/many_ise.txt", parser);
+    Assert.assertEquals(308, mapList.size());
+  }
+
+  @Test
+  public void testParseLinesMixDates() throws Exception {
+    SyslogParser parser = new SyslogParserBuilder().build();
+    List<Map<String, Object>> mapList = handleFile("src/test/resources/logs/3164/two_ise_mix_date.txt", parser);
+    Assert.assertEquals(2, mapList.size());
+  }
+
+  @Test
+  public void testParseLinesDeviations() throws Exception {
+    SyslogParser parser = new SyslogParserBuilder().withDeviations(EnumSet.of(AllowableDeviations.PRIORITY)).build();
+    List<Map<String, Object>> mapList = handleFile("src/test/resources/logs/3164/many_ise_deviations.txt", parser);
+    Assert.assertEquals(308, mapList.size());
+  }
+
+  @Test
+  public void testParseLinesConsumer() throws Exception {
+    SyslogParser parser = new SyslogParserBuilder().build();
+    final AtomicInteger count = new AtomicInteger();
+    handleFile("src/test/resources/logs/3164/many_ise.txt", parser, (map) -> {
+      count.incrementAndGet();
+    });
+
+    Assert.assertEquals(count.get(), 308);
+  }
+
+  @Test
+  public void testParseLinesConsumerMixDates() throws Exception {
+    SyslogParser parser = new SyslogParserBuilder().build();
+    final AtomicInteger count = new AtomicInteger();
+    handleFile("src/test/resources/logs/3164/two_ise_mix_date.txt", parser, (map) -> {
+      count.incrementAndGet();
+    });
+
+    Assert.assertEquals(count.get(), 2);
   }
 
   @Test(expected = ParseException.class)
   @SuppressWarnings("unchecked")
-  public void testWithDeviation() throws Exception {
-    Map<String, Object> map = handleFile("src/test/resources/logs/3164/single_ise_deviation.txt");
+  public void testInvalidLine() throws Exception {
+    SyslogParser parser = new SyslogParserBuilder().build();
+    Map<String, Object> map = handleLine("localhost some body of the message", parser);
   }
 
-  @Test
+  @Test(expected = ParseException.class)
   @SuppressWarnings("unchecked")
-  public void testWithDeviationAllowed() throws Exception {
-    Map<String, Object> map = handleFile("src/test/resources/logs/3164/single_ise_deviation.txt",
-        EnumSet.of(AllowableDeviations.PRIORITY));
-    Assert.assertEquals(expectedMessageOne, map.get(SyslogFieldKeys.MESSAGE.getField()));
-    Assert.assertEquals(expectedHostNameOne, map.get(SyslogFieldKeys.HEADER_HOSTNAME.getField()));
-    Assert.assertNull(map.get(SyslogFieldKeys.HEADER_PRI.getField()));
-    Assert.assertEquals(expectedTimestampOne, map.get(SyslogFieldKeys.HEADER_TIMESTAMP.getField()));
+  public void testInvalidLineConsumer() throws Exception {
+    SyslogParser parser = new SyslogParserBuilder().build();
+    handleLine("localhost some body of the message", parser, (map) -> {
+      Assert.fail();
+    });
   }
-
-  private static Map<String, Object> handleFile(String fileName) throws Exception {
-    return handleFile(fileName, EnumSet.of(AllowableDeviations.NONE));
-  }
-
-  private static Map<String, Object> handleFile(String fileName, EnumSet<AllowableDeviations> deviations)
-      throws Exception {
-    Rfc3164Lexer lexer = new Rfc3164Lexer(new ANTLRFileStream(fileName));
-    Rfc3164Parser parser = new Rfc3164Parser(new CommonTokenStream(lexer));
-    Syslog3164Listener listener = new Syslog3164Listener(new DefaultKeyProvider(), deviations);
-    parser.addParseListener(listener);
-    Rfc3164Parser.Syslog_msgContext ctx = parser.syslog_msg();
-    return listener.getMsgMap();
-  }
-
 }
