@@ -12,12 +12,14 @@ public enum SyslogFieldKeys {
   HEADER_TIMESTAMP("syslog.header.timestamp");
 
   private String field;
+
   SyslogFieldKeys(String field) {
     this.field = field;
   }
 
   /**
    * Returns the value.
+   *
    * @return the Field value.
    */
   public String getField() {
