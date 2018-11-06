@@ -2,7 +2,6 @@
 
 ### Simple Syslog 3164
 --------
-### Simple Syslog 5424
 
 A java library for parsing valid Syslog [IETF RFC 3164](https://tools.ietf.org/html/rfc3164) logs.
 The library provides it's own parser implementation, but also exposes the Antlr generated base classes
