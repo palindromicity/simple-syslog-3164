@@ -26,7 +26,7 @@ import com.github.palindromicity.syslog.dsl.SyslogFieldKeys;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class Rfc5424SyslogParserTest extends AbstractRfc5425SyslogParserTest {
+public class Rfc3164SyslogParserTest extends AbstractRfc3164SyslogParserTest {
 
   private static final String expectedMessageOne = "CISE_RADIUS_Accounting 0018032501 1 0 2018-09-14 10:54:09.095"
       + " +10:00 0221114759 3002 NOTICE Radius-Accounting: RADIUS Accounting watchdog update, ConfigVersionId=73, "

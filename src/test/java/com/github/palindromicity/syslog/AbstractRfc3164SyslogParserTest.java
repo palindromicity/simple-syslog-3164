@@ -27,7 +27,7 @@ import java.util.function.Consumer;
 
 import org.apache.commons.io.IOUtils;
 
-public abstract class AbstractRfc5425SyslogParserTest {
+public abstract class AbstractRfc3164SyslogParserTest {
 
   protected static List<Map<String, Object>> handleFile(String fileName, SyslogParser parser) throws Exception {
     try (Reader reader = new BufferedReader(new FileReader(new File(fileName)))) {
