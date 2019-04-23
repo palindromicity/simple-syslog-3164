@@ -30,7 +30,7 @@ import com.github.palindromicity.syslog.dsl.Syslog3164Listener;
 import com.github.palindromicity.syslog.dsl.generated.Rfc3164Lexer;
 import com.github.palindromicity.syslog.dsl.generated.Rfc3164Parser;
 import com.github.palindromicity.syslog.util.Validate;
-import org.antlr.v4.runtime.ANTLRInputStream;
+import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 
 /**
@@ -61,7 +61,7 @@ class Rfc3164SyslogParser implements SyslogParser {
   @Override
   public Map<String, Object> parseLine(String syslogLine) {
     Validate.notBlank(syslogLine, "syslogLine");
-    Rfc3164Lexer lexer = new Rfc3164Lexer(new ANTLRInputStream(syslogLine));
+    Rfc3164Lexer lexer = new Rfc3164Lexer(CharStreams.fromString(syslogLine));
     lexer.removeErrorListeners();
     lexer.addErrorListener(new DefaultErrorListener());
     Rfc3164Parser parser = new Rfc3164Parser(new CommonTokenStream(lexer));

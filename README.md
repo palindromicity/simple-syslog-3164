@@ -22,7 +22,7 @@
 <dependency>
   <groupId>com.github.palindromicity</groupId>
   <artifactId>simple-syslog-3164</artifactId>
-  <version>0.0.1</version>
+  <version>0.0.2</version>
   <type>pom</type>
 </dependency>
 ```

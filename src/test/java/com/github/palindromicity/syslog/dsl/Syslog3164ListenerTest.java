@@ -23,7 +23,7 @@ import com.github.palindromicity.syslog.AllowableDeviations;
 import com.github.palindromicity.syslog.DefaultKeyProvider;
 import com.github.palindromicity.syslog.dsl.generated.Rfc3164Lexer;
 import com.github.palindromicity.syslog.dsl.generated.Rfc3164Parser;
-import org.antlr.v4.runtime.ANTLRFileStream;
+import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.junit.Assert;
 import org.junit.Test;
@@ -68,7 +68,6 @@ public class Syslog3164ListenerTest {
   private static final String expectedSeverity = "5";
 
   @Test
-  @SuppressWarnings("unchecked")
   public void testAllPresent() throws Exception {
     Map<String, Object> map = handleFile("src/test/resources/logs/3164/single_ise.txt");
     Assert.assertEquals(expectedMessage, map.get(SyslogFieldKeys.MESSAGE.getField()));
@@ -80,13 +79,11 @@ public class Syslog3164ListenerTest {
   }
 
   @Test(expected = ParseException.class)
-  @SuppressWarnings("unchecked")
   public void testWithDeviation() throws Exception {
-    Map<String, Object> map = handleFile("src/test/resources/logs/3164/single_ise_deviation.txt");
+    handleFile("src/test/resources/logs/3164/single_ise_deviation.txt");
   }
 
   @Test
-  @SuppressWarnings("unchecked")
   public void testWithDeviationAllowed() throws Exception {
     Map<String, Object> map = handleFile("src/test/resources/logs/3164/single_ise_deviation.txt",
         EnumSet.of(AllowableDeviations.PRIORITY));
@@ -102,11 +99,11 @@ public class Syslog3164ListenerTest {
 
   private static Map<String, Object> handleFile(String fileName, EnumSet<AllowableDeviations> deviations)
       throws Exception {
-    Rfc3164Lexer lexer = new Rfc3164Lexer(new ANTLRFileStream(fileName));
+    Rfc3164Lexer lexer = new Rfc3164Lexer(CharStreams.fromFileName(fileName));
     Rfc3164Parser parser = new Rfc3164Parser(new CommonTokenStream(lexer));
     Syslog3164Listener listener = new Syslog3164Listener(new DefaultKeyProvider(), deviations);
     parser.addParseListener(listener);
-    Rfc3164Parser.Syslog_msgContext ctx = parser.syslog_msg();
+    parser.syslog_msg();
     return listener.getMsgMap();
   }
 
