@@ -84,7 +84,9 @@ public class Syslog3164Listener extends Rfc3164BaseListener {
 
   @Override
   public void exitHeaderTimeStamp3164(Rfc3164Parser.HeaderTimeStamp3164Context ctx) {
-    msgMap.put(keyProvider.getHeaderTimeStamp(), ctx.getText().trim());
+    msgMap.put(keyProvider.getHeaderTimeStamp(), String.format("%s%s %s",ctx.date_month_short().getText(),
+        ctx.date_day_short().getText(),
+        ctx.partial_time().getText()));
   }
 
   @Override

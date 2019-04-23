@@ -119,6 +119,30 @@ public class Rfc3164BaseListener implements Rfc3164Listener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterDate_month_short(Rfc3164Parser.Date_month_shortContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitDate_month_short(Rfc3164Parser.Date_month_shortContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterDate_day_short(Rfc3164Parser.Date_day_shortContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitDate_day_short(Rfc3164Parser.Date_day_shortContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterFull_date(Rfc3164Parser.Full_dateContext ctx) { }
 	/**
 	 * {@inheritDoc}
