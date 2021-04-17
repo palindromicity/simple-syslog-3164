@@ -6,11 +6,21 @@
   <version>0.0.2-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>simple-syslog-3164</name>
+  <name>simple-syslog-5424</name>
+  <description>A java library for parsing valid RFC 3164 syslog</description>
+  <url>https://github.com/palindromicity</url>
   <organization>
     <name>palindromicity</name>
     <url>https://github.com/palindromicity</url>
   </organization>
+  <developers>
+    <developer>
+      <name>Otto Fowler</name>
+      <email>ottobackwards@gmail.com</email>
+      <organization>palindromicity</organization>
+      <organizationUrl>https://github.com/palindromicity</organizationUrl>
+    </developer>
+  </developers>
   <scm>
     <connection>scm:git:https://github.com/palindromicity/simple-syslog-3164.git</connection>
     <developerConnection>scm:git:git@github.com:palindromicity/simple-syslog-3164.git</developerConnection>
@@ -32,10 +42,13 @@
     <global_antlr_version>4.5</global_antlr_version>
   </properties>
   <distributionManagement>
+    <snapshotRepository>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+    </snapshotRepository>
     <repository>
-      <id>bintray-palindromicity-simple-syslog-3164</id>
-      <name>palindromicity-simple-syslog-3164</name>
-      <url>https://api.bintray.com/maven/palindromicity/simple-syslog-3164/simple-syslog-3164/;publish=1</url>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
     </repository>
   </distributionManagement>
   <dependencies>
@@ -142,10 +155,25 @@
       <build>
         <plugins>
           <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-source-plugin</artifactId>
+            <version>2.2.1</version>
             <executions>
               <execution>
                 <id>attach-sources</id>
+                <goals>
+                  <goal>jar-no-fork</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>2.9.1</version>
+            <executions>
+              <execution>
+                <id>attach-javadocs</id>
                 <goals>
                   <goal>jar</goal>
                 </goals>
@@ -153,12 +181,15 @@
             </executions>
           </plugin>
           <plugin>
-            <artifactId>maven-javadoc-plugin</artifactId>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>1.5</version>
             <executions>
               <execution>
-                <id>attach-javadocs</id>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
                 <goals>
-                  <goal>jar</goal>
+                  <goal>sign</goal>
                 </goals>
               </execution>
             </executions>

@@ -27,7 +27,7 @@ a `Reader` and all `parseLines`
   try (Reader reader = new BufferedReader(new FileReader(new File(fileName)))) {
       syslogMapList = parser.parseLines(reader);
   }
- 
+
 ```
 
 Both `parseLine` and `parseLines` also provide a functional interface if you prefer that style.
@@ -49,7 +49,7 @@ Just pass a `Consumer` to the function.
         // do something with each map
       });
   }
- 
+
 ```
 
 ```java
@@ -107,7 +107,7 @@ Simple Syslog 3164 uses [Antlr 4](http://www.antlr.org) to generate the `Listene
 The generated `Rfc3164Listener` and `Rfc3164Visitor` interfaces, or `Rfc3164BaseListener` and `Rfc3164BaseVisitor` classes,
 may be used to implement new parsers as well in the event that you prefer different handling.
 
-Implementors would then build their own parsers or builders etc.  In other words the use of this library would 
+Implementors would then build their own parsers or builders etc.  In other words the use of this library would
 minimally be the Antlr classes alone.
 
 For example you would build a 'parser' that used your implementations, most likely implemented like this:
@@ -123,25 +123,10 @@ For example you would build a 'parser' that used your implementations, most like
 
 --------
 ```xml
-<repositories>
-  <repository>
-    <id>bintray</id>
-    <url>http://dl.bintray.com/palndromicity/simple-syslog-3164</url>
-    <releases>
-      <enabled>true</enabled>
-    </releases>
-    <snapshots>
-      <enabled>false</enabled>
-    </snapshots>
-  </repository>
-</repositories>
-```
-
-```xml
 <dependency>
   <groupId>com.github.palindromicity</groupId>
   <artifactId>simple-syslog-3164</artifactId>
-  <version>0.0.1</version>
+  <version>0.0.2</version>
   <type>pom</type>
 </dependency>
 ```
