@@ -23,7 +23,7 @@
   </developers>
   <scm>
     <connection>scm:git:https://github.com/palindromicity/simple-syslog-3164.git</connection>
-    <developerConnection>scm:git:https://github.com:palindromicity/simple-syslog-3164.git</developerConnection>
+    <developerConnection>scm:git:https://github.com/palindromicity/simple-syslog-3164.git</developerConnection>
     <url>https://github.com/palindromicity/simple-syslog-3164</url>
     <tag>HEAD</tag>
   </scm>
