@@ -23,7 +23,7 @@
   </developers>
   <scm>
     <connection>scm:git:https://github.com/palindromicity/simple-syslog-3164.git</connection>
-    <developerConnection>scm:git:git@github.com:palindromicity/simple-syslog-3164.git</developerConnection>
+    <developerConnection>scm:git:https://github.com:palindromicity/simple-syslog-3164.git</developerConnection>
     <url>https://github.com/palindromicity/simple-syslog-3164</url>
     <tag>HEAD</tag>
   </scm>
@@ -39,7 +39,7 @@
   <properties>
     <maven.min-version>3.5.2</maven.min-version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <global_antlr_version>4.5</global_antlr_version>
+    <global_antlr_version>4.13.2</global_antlr_version>
   </properties>
   <distributionManagement>
     <snapshotRepository>

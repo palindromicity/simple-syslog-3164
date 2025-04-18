@@ -1,4 +1,4 @@
-// Generated from com/github/palindromicity/syslog/dsl/generated/Rfc3164.g4 by ANTLR 4.5
+// Generated from com/github/palindromicity/syslog/dsl/generated/Rfc3164.g4 by ANTLR 4.13.2
 package com.github.palindromicity.syslog.dsl.generated;
 
 //CHECKSTYLE:OFF
@@ -21,7 +21,6 @@ package com.github.palindromicity.syslog.dsl.generated;
 
 
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
@@ -30,6 +29,7 @@ import org.antlr.v4.runtime.tree.TerminalNode;
  * which can be extended to create a listener which only needs to handle a subset
  * of the available methods.
  */
+@SuppressWarnings("CheckReturnValue")
 public class Rfc3164BaseListener implements Rfc3164Listener {
 	/**
 	 * {@inheritDoc}
